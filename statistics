@@ -1,0 +1,30 @@
+#!/bin/bash
+
+TIME_START=$(date "+%H:%M" -d -3hours)
+TIME_END=$(date "+%H:%M");
+
+AWK_FILTER="/2014:$TIME_START/,/2014:$TIME_END/"
+
+awk $AWK_FILTER'{ 
+	printf("%s ", $1); 
+	for(i=12;i<NF;i++) { 
+		printf("%s ", $i); 
+	}
+	printf("%s\n", $NF)
+}' /var/log/access.log \
+| awk -F '"' '{ 
+	++count[$1]; 
+	ua[$1]=$2
+} 
+
+END{ 
+	for(x in count) {
+		print count[x], x, ua[x]
+	}
+}' \
+| sort -n -r | head -10
+
+
+# 上述代码中，14、24行后面的 \ 表示续行。Shell中如果命令一行写不完，可以通过 \ 另起一行继续写。
+# 下面是可直接执行的单行程序：
+# awk '/2014:15:22/,/2014:18:22/{printf("%s ", $1); for(i=12;i<NF;i++){ printf("%s ", $i); } printf("%s\n", $NF)}'  /var/log/access.log | awk -F'"' '{ ++count[$1]; ua[$1]=$2 } END{ for(x in count) { print count[x], x, ua[x]} }'  | sort -n -r | head -10

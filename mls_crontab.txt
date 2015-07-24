@@ -1,0 +1,67 @@
+#30 4 * * * (cd /home/crontab; ./behaviors.sh>>./logs/run_behaviors)
+#0 5 * * * (cd /home/statistics; sh new_log_load.sh>>./logs/run_api)
+#30 5 * * * (cd /home/crontab; sh new_user_start.sh>>./logs/run_start)
+#0 6 * * * (cd /home/crontab; sh shake_location.sh>>./logs/run_location)
+#0 6 * * * (cd /home/statistics; python user_install.py>>./logs/run_install)
+#0 6 * * * (cd /home/crontab; sh st_vno_search.sh>>./logs/run_vno_search)
+#0 7 * * * (cd /home/statistics; python behavior_perday.py>>./logs/run_behaviors)
+#0 7 * * * (cd /home/crontab; python st_analysis_special.py>>./logs/run_analysis_special)
+#0 7 * * * (cd /home/maillist; /usr/local/bin/php send_analysis.php>>./logs/log_send_analysis)
+#0 */2 * * * /opt/baidu1/restart_job.sh
+#30 */1 * * * (cd /home/statistics; python user_install_hour.py>>./logs/run_install_hour)
+#yijian
+#0 6 * * * (cd /home/yijian; python yj_users_day.py>>./logs/run_install)
+#30 */1 * * * (cd /home/yijian; python yj_users_day_hour.py>>./logs/run_install_hour)
+
+#maillist
+#0 */8 * * * (cd /home/maillist; /usr/local/bin/php api_statistic.php>>./logs/log_api)
+
+#wanyou
+#0 8 * * * (cd /home/wy_analysis; python start_behaviors.py>>./logs/run_analysis)
+#0 17 * * 5 /opt/apps/weekly_downloads.sh
+#0 3 * * 1 /opt/apps/weekly_trends.sh
+
+#1 2 * * * /var/backup/getbackup.sh
+1 * * * * echo `date` >> ~/dir_higo/tmp.txt
+*/2 * * * *  /usr/local/sphinx-chinese/bin/indexer --all --rotate
+
+*/2 * * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php searchwords/tongjiKeywords
+* */12 * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php Order/OrderReceivingDelayPush 
+* */12 * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php Order/OrderReceiver
+*/5 * * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php Order/OrderRevoke
+*/1 * * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php coupon/AutoCollectCouponJob
+*/15 * * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php Order/BalanceOrder
+*/5 * * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php Order/VIPOrderSettlement
+*/3 * * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php coupon/CouponRelationJob
+#*/15 * * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php Order/OrderUnpaidReminderPush
+*/15 * * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php Order/CloseNotPayedOrder4Seckill
+*/15 * * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php coupon/CheckCouponExpireJob 
+#* 22 * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php Order/OrderPrepareReminderPush
+#* 22 * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php Order/OrderDispatchReminderPush
+#* */2 * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php Order/CloseNotPayedOrder
+#* */2 * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php Order/SendGoodsNotification
+*/1 * * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php Accountgroup/ImportMembersCount
+*/1 * * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php Accountgroup/TongjiGroupWeight
+
+* 1  * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php Accountgroup/Group_para_two_hours
+* 2  * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php Accountgroup/Group_para_week
+*/60 *  * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php statistics/For_sales
+
+
+
+* */3 * * * /usr/local/bin/php /opt/web/lehe.com/midian/public/script/index.php goods/updateGoodsFavorites
+
+5 */1 * * * (cd /opt/web/lehe.com/box; ./yii box-apply/batch-add-box-by-expect-date >> ./console/runtime/batch-add.log)
+
+* */1 * * * curl -L "http://192.168.190.2/hgwap/index.php/cron/wxShare/insertToRedisHigo318"
+
+*/1 * * * * /usr/local/bin/php /opt/web/lehe.com/hgadmin/protected/yiic.php ReportEventPush startReportEvent
+
+#提报活动-开始报名推入队列
+*/5 * * * * /usr/local/bin/php /opt/web/lehe.com/hgadmin/protected/yiic.php ReportEventPush pushRegistration
+
+#提报活动-开始活动推入队列
+*/5 * * * * /usr/local/bin/php /opt/web/lehe.com/hgadmin/protected/yiic.php ReportEventPush pushEvent
+
+#提报活动-扫描短信队列并发送
+*/5 * * * * /usr/local/bin/php /opt/web/lehe.com/hgadmin/protected/yiic.php ReportEventPush SendMessageQueue
