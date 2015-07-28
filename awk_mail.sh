@@ -9,4 +9,4 @@ awk -v p="${p:=5}" 'BEGIN{ FS="\n";RS="";ORS="\n" } {
             print $i" end here"    
         }
     } 
-}' ./mail.log
+}' /Users/MLS/shell/mail.log
